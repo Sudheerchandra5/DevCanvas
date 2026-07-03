@@ -1,62 +1,35 @@
-import {
-  Stack,
-  Row,
-  Grid,
-  H1,
-  H2,
-  H3,
-  Text,
-  Code,
-  Card,
-  CardHeader,
-  CardBody,
-  Pill,
-  Stat,
-  Divider,
-  Callout,
-  TextInput,
-  useHostTheme,
-  useCanvasState,
-} from "cursor/canvas";
+export type Level = "Beginner" | "Intermediate" | "Advanced" | "Expert";
 
-type Level = "Beginner" | "Intermediate" | "Advanced" | "Expert";
-
-type Topic = {
+export type Topic = {
   name: string;
   level: Level;
   since?: string;
   summary: string;
   details: string[];
+  diagram?: string;
+  simple?: string;
 };
 
-type SubCategory = {
+export type SubCategory = {
   name: string;
   topics: Topic[];
 };
 
-type Category = {
+export type Category = {
   id: string;
   label: string;
   blurb: string;
   subs: SubCategory[];
 };
 
-const LEVEL_ORDER: Level[] = ["Beginner", "Intermediate", "Advanced", "Expert"];
+export const LEVEL_ORDER: Level[] = [
+  "Beginner",
+  "Intermediate",
+  "Advanced",
+  "Expert",
+];
 
-function levelColor(level: Level, theme: ReturnType<typeof useHostTheme>): string {
-  switch (level) {
-    case "Beginner":
-      return theme.accent.primary;
-    case "Intermediate":
-      return theme.text.link;
-    case "Advanced":
-      return theme.text.secondary;
-    case "Expert":
-      return theme.text.tertiary;
-  }
-}
-
-const DATA: Category[] = [
+export const DATA: Category[] = [
   {
     id: "platform",
     label: "1 · Platform & Tooling",
@@ -69,6 +42,9 @@ const DATA: Category[] = [
           {
             name: "JDK vs JRE vs JVM",
             level: "Beginner",
+            simple:
+              "In plain terms: the JVM runs your program, the JRE is what you need to run Java apps, and the JDK is what you need to build them.",
+            diagram: "jdk-jre-jvm",
             summary:
               "The JVM executes bytecode, the JRE bundles the JVM plus core libraries, and the JDK adds compilers and dev tools.",
             details: ["JVM", "JRE", "JDK", "platform independence", "Write Once Run Anywhere"],
@@ -76,6 +52,9 @@ const DATA: Category[] = [
           {
             name: "Editions & distributions",
             level: "Beginner",
+            simple:
+              "In plain terms: Java has one standard, and several companies ship their own free copies of it — pick any and you're fine.",
+            diagram: "editions-distros",
             summary:
               "Java SE is the core platform; distributions (Oracle JDK, OpenJDK, Temurin, Corretto, Azul) ship the same spec with different support.",
             details: ["Java SE", "OpenJDK", "Temurin", "Corretto", "LTS releases"],
@@ -83,6 +62,7 @@ const DATA: Category[] = [
           {
             name: "Bytecode & .class files",
             level: "Intermediate",
+            diagram: "bytecode-class",
             summary:
               "javac compiles .java to portable .class bytecode that any conforming JVM can run; the verifier checks safety at load time.",
             details: [".class", "constant pool", "bytecode verifier", "magic 0xCAFEBABE"],
@@ -95,6 +75,9 @@ const DATA: Category[] = [
           {
             name: "javac & java commands",
             level: "Beginner",
+            simple:
+              "In plain terms: one command turns your code into a runnable file, the other actually runs it.",
+            diagram: "javac-java",
             summary:
               "javac compiles sources; java launches the main class. Since 11, java can run a single source file directly.",
             details: ["javac", "java", "main(String[])", "single-file launch (11)"],
@@ -102,6 +85,7 @@ const DATA: Category[] = [
           {
             name: "Classpath & module path",
             level: "Intermediate",
+            diagram: "classpath-modulepath",
             summary:
               "The classpath tells the JVM where to find classes/JARs; the module path is its modular counterpart.",
             details: ["-cp / -classpath", "CLASSPATH", "JAR", "--module-path"],
@@ -109,7 +93,10 @@ const DATA: Category[] = [
           {
             name: "JShell (REPL)",
             level: "Beginner",
+            simple:
+              "In plain terms: a scratchpad where you type one line of Java and instantly see the result — no full program needed.",
             since: "9",
+            diagram: "jshell-repl",
             summary:
               "An interactive read-eval-print loop for experimenting with expressions and snippets without a full class.",
             details: ["jshell", "snippets", "/vars", "instant feedback"],
@@ -122,6 +109,7 @@ const DATA: Category[] = [
           {
             name: "Maven & Gradle",
             level: "Intermediate",
+            diagram: "maven-gradle",
             summary:
               "Declarative build tools managing dependencies, lifecycle phases, and plugins. Maven uses XML POMs; Gradle uses a Groovy/Kotlin DSL.",
             details: ["pom.xml", "build.gradle", "dependency mgmt", "central repo"],
@@ -130,6 +118,7 @@ const DATA: Category[] = [
             name: "jlink & jpackage",
             level: "Advanced",
             since: "11/14",
+            diagram: "jlink-jpackage",
             summary:
               "Create minimal custom runtime images (jlink) and native OS installers/app bundles (jpackage).",
             details: ["jlink runtime image", "jpackage", "jdeps", "self-contained app"],
@@ -150,6 +139,9 @@ const DATA: Category[] = [
           {
             name: "Class, main & statements",
             level: "Beginner",
+            simple:
+              "In plain terms: every Java program lives inside a class and starts running at a special method called main.",
+            diagram: "class-anatomy",
             summary:
               "Code lives in classes; execution starts at public static void main(String[]). Statements end with semicolons; blocks use braces.",
             details: ["public static void main", "package", "import", "statements & blocks"],
@@ -157,6 +149,9 @@ const DATA: Category[] = [
           {
             name: "Comments & Javadoc",
             level: "Beginner",
+            simple:
+              "In plain terms: notes you write for humans that the computer simply ignores.",
+            diagram: "comments",
             summary:
               "Line (//), block (/* */), and documentation (/** */) comments. Javadoc generates API docs from doc comments and tags.",
             details: ["//", "/* */", "/** */", "@param/@return", "javadoc tool"],
@@ -164,6 +159,9 @@ const DATA: Category[] = [
           {
             name: "Identifiers, keywords & conventions",
             level: "Beginner",
+            simple:
+              "In plain terms: the rules for naming your things, plus a few words Java keeps for itself.",
+            diagram: "identifiers",
             summary:
               "Naming rules plus reserved words. Convention: camelCase methods/fields, PascalCase types, UPPER_SNAKE constants.",
             details: ["reserved words", "camelCase", "PascalCase", "UPPER_SNAKE", "contextual keywords"],
@@ -176,6 +174,9 @@ const DATA: Category[] = [
           {
             name: "Primitive types",
             level: "Beginner",
+            simple:
+              "In plain terms: the most basic kinds of values — whole numbers, decimals, single characters, and true/false.",
+            diagram: "primitives",
             summary:
               "Eight built-ins with fixed sizes: byte, short, int, long, float, double, char, boolean. Stored by value.",
             details: ["int 32-bit", "long 64-bit", "double", "char (UTF-16)", "boolean"],
@@ -183,6 +184,9 @@ const DATA: Category[] = [
           {
             name: "Reference types & null",
             level: "Beginner",
+            simple:
+              "In plain terms: most values are really links to objects; a link that points at nothing is null.",
+            diagram: "references-null",
             summary:
               "Objects, arrays, and interfaces are accessed via references; an unassigned reference is null and dereferencing it throws NPE.",
             details: ["references", "null", "NullPointerException", "heap allocation"],
@@ -191,6 +195,7 @@ const DATA: Category[] = [
             name: "Wrappers & autoboxing",
             level: "Intermediate",
             since: "5",
+            diagram: "autoboxing-cache",
             summary:
               "Wrapper classes box primitives into objects; autoboxing/unboxing convert automatically. Beware cache and == pitfalls.",
             details: ["Integer/Double", "autoboxing", "Integer cache -128..127", "unboxing NPE"],
@@ -198,6 +203,9 @@ const DATA: Category[] = [
           {
             name: "Type conversion & casting",
             level: "Beginner",
+            simple:
+              "In plain terms: changing a value from one type to another — sometimes automatic, sometimes you have to ask.",
+            diagram: "casting",
             summary:
               "Widening conversions are implicit; narrowing requires an explicit cast and may lose data or overflow.",
             details: ["widening", "narrowing cast", "overflow", "instanceof"],
@@ -206,6 +214,7 @@ const DATA: Category[] = [
             name: "var (local type inference)",
             level: "Intermediate",
             since: "10",
+            diagram: "var-inference",
             summary:
               "Infers the static type of a local variable from its initializer; the variable is still strongly, statically typed.",
             details: ["var", "local-only", "initializer required", "not dynamic"],
@@ -218,6 +227,9 @@ const DATA: Category[] = [
           {
             name: "Operators",
             level: "Beginner",
+            simple:
+              "In plain terms: the symbols that do math and comparisons, like +, -, and >.",
+            diagram: "operators",
             summary:
               "Arithmetic, relational, logical, bitwise, shift, assignment, ternary, and instanceof — governed by precedence and associativity.",
             details: ["+ - * / %", "&& || !", "& | ^ ~ << >> >>>", "?:", "precedence"],
@@ -225,6 +237,9 @@ const DATA: Category[] = [
           {
             name: "Literals & numeric formatting",
             level: "Beginner",
+            simple:
+              'In plain terms: how you write fixed values straight into code, like 42 or "hello".',
+            diagram: "literals",
             summary:
               "Integer/float/char/string/boolean literals, with hex/octal/binary forms and underscores as digit separators.",
             details: ["0x / 0b / 0_", "1_000_000", "1.5e3", "'\\u0041'", "L/f/d suffixes"],
@@ -244,6 +259,8 @@ const DATA: Category[] = [
           {
             name: "if / else if / else",
             level: "Beginner",
+            simple:
+              "In plain terms: do something only when a condition is true, otherwise do something else.",
             summary: "Conditional execution based on boolean expressions, optionally chained.",
             details: ["if", "else if", "else", "boolean condition"],
           },
@@ -271,12 +288,16 @@ const DATA: Category[] = [
           {
             name: "for / while / do-while",
             level: "Beginner",
+            simple:
+              "In plain terms: repeat a block of code over and over until you're done.",
             summary: "Classic counted and conditional loops; do-while always runs the body once.",
             details: ["for(init;cond;upd)", "while", "do-while"],
           },
           {
             name: "Enhanced for (for-each)",
             level: "Beginner",
+            simple:
+              "In plain terms: go through every item in a list without counting positions yourself.",
             since: "5",
             summary: "Iterates arrays and Iterables without an explicit index or iterator.",
             details: ["for(T x : coll)", "Iterable", "no index"],
@@ -304,6 +325,8 @@ const DATA: Category[] = [
           {
             name: "Math & StrictMath",
             level: "Beginner",
+            simple:
+              "In plain terms: a toolbox of ready-made math functions like square root, powers, and rounding.",
             summary:
               "Static math functions (abs, pow, sqrt, min/max, rounding, trig). StrictMath guarantees bit-for-bit reproducible results across platforms.",
             details: ["Math.abs/pow/sqrt", "round/ceil/floor", "min/max", "StrictMath", "Math.PI/E"],
@@ -377,6 +400,8 @@ const DATA: Category[] = [
           {
             name: "Immutability & the string pool",
             level: "Beginner",
+            simple:
+              "In plain terms: text values never change once created, and Java quietly reuses identical ones.",
             summary:
               "Strings never change after creation; literals are interned in a shared pool, so == compares identity, not content.",
             details: ["immutable", "intern()", "== vs equals()", "string pool"],
@@ -384,6 +409,8 @@ const DATA: Category[] = [
           {
             name: "Core String API",
             level: "Beginner",
+            simple:
+              "In plain terms: the built-in tools for working with text — length, search, upper/lowercase, splitting, and more.",
             summary:
               "Length, indexing, slicing, search, case, trim/strip, split/join, and replace operations.",
             details: ["length()", "substring", "indexOf", "split/join", "strip() (11)"],
@@ -488,6 +515,8 @@ const DATA: Category[] = [
           {
             name: "Declaration & initialization",
             level: "Beginner",
+            simple:
+              "In plain terms: an array is a fixed-size row of boxes that all hold the same type of value.",
             summary:
               "Fixed-length objects with a length field; created with new or array initializers, default-zeroed.",
             details: ["int[] a = new int[n]", "{1,2,3}", "length", "0/null/false defaults"],
@@ -521,6 +550,8 @@ const DATA: Category[] = [
           {
             name: "Signatures, parameters & return",
             level: "Beginner",
+            simple:
+              "In plain terms: a method is a reusable action — it takes inputs and can hand back a result.",
             summary:
               "A method has a name, parameter list, return type, and body; void means no return value.",
             details: ["return type", "parameters", "void", "return"],
@@ -562,6 +593,8 @@ const DATA: Category[] = [
           {
             name: "static vs instance & main",
             level: "Beginner",
+            simple:
+              "In plain terms: some methods belong to the class itself, others belong to one specific object.",
             summary:
               "Static methods belong to the class and need no instance; instance methods operate on an object via this.",
             details: ["static", "instance", "this", "method dispatch"],
@@ -581,6 +614,8 @@ const DATA: Category[] = [
           {
             name: "Fields, methods & objects",
             level: "Beginner",
+            simple:
+              "In plain terms: a class is a blueprint; objects are the real things you build from it.",
             summary:
               "A class is a blueprint; objects are instances created with new. Fields hold state, methods define behavior.",
             details: ["class", "new", "fields", "methods", "instance"],
@@ -588,6 +623,8 @@ const DATA: Category[] = [
           {
             name: "Constructors & this",
             level: "Beginner",
+            simple:
+              "In plain terms: a constructor is the special setup code that runs when a new object is created.",
             summary:
               "Special initializers run on creation; can be overloaded and chained with this(...); this refers to the current object.",
             details: ["constructor", "this()", "this.field", "default ctor", "overloaded ctors"],
@@ -874,6 +911,8 @@ const DATA: Category[] = [
           {
             name: "try / catch / finally",
             level: "Beginner",
+            simple:
+              "In plain terms: attempt risky code, deal with any error if it happens, and always clean up afterward.",
             summary:
               "Guard risky code, handle specific exception types, and run cleanup in finally regardless of outcome.",
             details: ["try", "catch", "finally", "multi-catch |", "rethrow"],
@@ -1153,6 +1192,8 @@ const DATA: Category[] = [
           {
             name: "Console & standard streams",
             level: "Beginner",
+            simple:
+              "In plain terms: how your program prints text out to the screen and reads text you type in.",
             summary:
               "System.in/out/err and Scanner provide simple console interaction.",
             details: ["System.out", "System.in", "Scanner", "printf"],
@@ -1697,227 +1738,3 @@ const DATA: Category[] = [
     ],
   },
 ];
-
-function topicMatches(t: Topic, q: string): boolean {
-  if (!q) return true;
-  const hay = (t.name + " " + t.summary + " " + t.details.join(" ")).toLowerCase();
-  return hay.includes(q.toLowerCase());
-}
-
-function LevelDot({ level }: { level: Level }) {
-  const theme = useHostTheme();
-  return (
-    <span
-      style={{
-        width: 8,
-        height: 8,
-        borderRadius: 8,
-        background: levelColor(level, theme),
-        display: "inline-block",
-        flex: "0 0 auto",
-      }}
-    />
-  );
-}
-
-function TopicEntry({ topic }: { topic: Topic }) {
-  const theme = useHostTheme();
-  return (
-    <Stack gap={6} style={{ paddingBottom: 4 }}>
-      <Row gap={8} align="center" wrap>
-        <LevelDot level={topic.level} />
-        <Text weight="semibold">{topic.name}</Text>
-        <span
-          style={{
-            fontSize: 10,
-            letterSpacing: 0.3,
-            textTransform: "uppercase",
-            color: levelColor(topic.level, theme),
-          }}
-        >
-          {topic.level}
-        </span>
-        {topic.since ? (
-          <Pill size="sm">Java {topic.since}</Pill>
-        ) : null}
-      </Row>
-      <Text tone="secondary" size="small">
-        {topic.summary}
-      </Text>
-      <Row gap={6} wrap>
-        {topic.details.map((d, i) => (
-          <span
-            key={i}
-            style={{
-              background: theme.fill.tertiary,
-              color: theme.text.secondary,
-              borderRadius: 4,
-              padding: "2px 7px",
-              fontSize: 11,
-              lineHeight: 1.5,
-            }}
-          >
-            {d}
-          </span>
-        ))}
-      </Row>
-    </Stack>
-  );
-}
-
-function SubCategorySection({ sub }: { sub: SubCategory }) {
-  const theme = useHostTheme();
-  return (
-    <Stack gap={12}>
-      <H3 style={{ color: theme.text.secondary }}>{sub.name}</H3>
-      <Stack gap={14}>
-        {sub.topics.map((t) => (
-          <div key={t.name} style={{ display: "contents" }}>
-            <TopicEntry topic={t} />
-          </div>
-        ))}
-      </Stack>
-    </Stack>
-  );
-}
-
-function CategorySection({
-  cat,
-  count,
-}: {
-  cat: Category;
-  count: number;
-}) {
-  return (
-    <Card collapsible defaultOpen={false}>
-      <CardHeader trailing={<Pill size="sm">{count} topics</Pill>}>
-        {cat.label}
-      </CardHeader>
-      <CardBody>
-        <Stack gap={18}>
-          <Text tone="secondary">{cat.blurb}</Text>
-          {cat.subs.map((s, i) => (
-            <div key={s.name} style={{ display: "contents" }}>
-              {i > 0 ? <Divider /> : null}
-              <SubCategorySection sub={s} />
-            </div>
-          ))}
-        </Stack>
-      </CardBody>
-    </Card>
-  );
-}
-
-export default function CoreJavaCatalog() {
-  const theme = useHostTheme();
-  const [level, setLevel] = useCanvasState<Level | "all">("level-filter", "all");
-  const [query, setQuery] = useCanvasState<string>("search-query", "");
-
-  const filtered: { cat: Category; count: number }[] = DATA.map((cat) => {
-    const subs = cat.subs
-      .map((s) => ({
-        ...s,
-        topics: s.topics.filter(
-          (t) => (level === "all" || t.level === level) && topicMatches(t, query),
-        ),
-      }))
-      .filter((s) => s.topics.length > 0);
-    const count = subs.reduce((n, s) => n + s.topics.length, 0);
-    return { cat: { ...cat, subs }, count };
-  }).filter((x) => x.count > 0);
-
-  const totalTopics = DATA.reduce(
-    (n, c) => n + c.subs.reduce((m, s) => m + s.topics.length, 0),
-    0,
-  );
-  const totalSubs = DATA.reduce((n, c) => n + c.subs.length, 0);
-  const levelCounts = LEVEL_ORDER.map((lv) => ({
-    lv,
-    n: DATA.reduce(
-      (n, c) =>
-        n + c.subs.reduce((m, s) => m + s.topics.filter((t) => t.level === lv).length, 0),
-      0,
-    ),
-  }));
-
-  return (
-    <Stack gap={20} style={{ padding: 24, maxWidth: 1080, margin: "0 auto" }}>
-      <Stack gap={6}>
-        <H1>Core Java — End-to-End Catalog</H1>
-        <Text tone="secondary">
-          The complete Java SE landscape from first principles to expert internals,
-          organized into categories and subcategories. Every topic is tagged with a
-          difficulty level and the release that introduced it, with the concrete
-          types, keywords, and microdetails you need to know.
-        </Text>
-      </Stack>
-
-      <Grid columns={4} gap={12}>
-        <Stat value={totalTopics} label="Topics" />
-        <Stat value={DATA.length} label="Categories" tone="info" />
-        <Stat value={totalSubs} label="Subcategories" />
-        <Stat value="21" label="LTS covered" />
-      </Grid>
-
-      <Callout tone="info" title="Difficulty levels">
-        <Row gap={16} wrap>
-          {levelCounts.map(({ lv, n }) => (
-            <span key={lv} style={{ display: "inline-flex" }}>
-              <Row gap={6} align="center">
-                <LevelDot level={lv} />
-                <Text size="small" weight="medium">
-                  {lv}
-                </Text>
-                <Text size="small" tone="tertiary">
-                  ({n})
-                </Text>
-              </Row>
-            </span>
-          ))}
-        </Row>
-      </Callout>
-
-      <Stack gap={10}>
-        <Row gap={8} wrap align="center">
-          <Pill active={level === "all"} onClick={() => setLevel("all")}>
-            All levels
-          </Pill>
-          {LEVEL_ORDER.map((lv) => (
-            <span key={lv} style={{ display: "inline-flex" }}>
-              <Pill active={level === lv} onClick={() => setLevel(lv)}>
-                {lv}
-              </Pill>
-            </span>
-          ))}
-        </Row>
-        <TextInput
-          value={query}
-          onChange={setQuery}
-          type="search"
-          placeholder="Search topics, keywords, APIs…"
-        />
-      </Stack>
-
-      {filtered.length === 0 ? (
-        <Callout tone="warning" title="No matches">
-          No topics match the current level and search filters. Try clearing the
-          search or selecting “All levels”.
-        </Callout>
-      ) : (
-        <Stack gap={12}>
-          {filtered.map(({ cat, count }) => (
-            <div key={cat.id} style={{ display: "contents" }}>
-              <CategorySection cat={cat} count={count} />
-            </div>
-          ))}
-        </Stack>
-      )}
-
-      <Text size="small" tone="tertiary">
-        Source: Java SE specification &amp; API · feature versions reflect first
-        stable (non-preview) release · {totalTopics} topics across {DATA.length}{" "}
-        categories.
-      </Text>
-    </Stack>
-  );
-}
